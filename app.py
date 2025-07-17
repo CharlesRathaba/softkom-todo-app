@@ -1,18 +1,27 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask
+from config import Config
+from extensions import db, migrate, login_manager
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-@app.route('/')
-def index():
-    return render_template('index.html') 
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    login_manager.login_view = 'main.login' 
 
-@app.route('/api/translate', methods=['POST'])
-def translate():
-    data = request.get_json(force=True)
-    text = data.get('text')
-    target_lang = data.get('target_lang')
-    # Placeholder: implement translation logic here
-    return jsonify({'translated_text': f'{text} (translated to {target_lang})'})
+    with app.app_context():
+        from routes import bp as routes_bp
+        app.register_blueprint(routes_bp)
+
+    return app
+
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(int(user_id))
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)

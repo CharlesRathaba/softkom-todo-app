@@ -1,0 +1,141 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 50px);
+    padding: 20px;
+    background-color: #dfdfdf;
+}
+
+.login-box-field {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #dfdfdf;
+}
+
+.login-header {
+    text-align: center;
+    margin: 20px 0 10px 0;
+}
+
+.login-header header {
+    font-weight: 600;
+    font-size: 30px;
+    color: #333
+}
+
+.notification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px 0;
+}
+
+.notification {
+    max-width: 100%;
+    width: auto;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.is-danger {
+    background-color: #f14668;
+    color: #fff;
+}
+
+.login-box .input-field {
+    width: 100%;
+    height: 60px;
+    font-size: 17px;
+    padding: 0 25px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgb(0, 0, 0, 0.05);
+    outline: none;
+}
+
+::placeholder {
+    font-weight: 500;
+    color: #222;
+}
+
+.input-field:focus {
+    width: 105%;
+}
+
+.forgot {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    margin-left: 8px;
+}
+
+#check {
+    margin-right: 8px;
+    margin-top: 3px;
+}
+
+section a {
+    text-decoration: none;
+    color: #555;
+    margin-right: 8px;
+}
+
+section a:hover {
+    text-decoration: underline;
+}
+
+.input-submit {
+    position: relative;
+}
+
+.submit-btn {
+    width: 100%;
+    height: 60px;
+    background-color: #222;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+}
+
+.submit-btn:hover {
+    background-color: #000;
+    transform: scale(1.05, 1);
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.signup-link a {
+    font-weight: 600;
+    color: #000;
+    margin-left: 4px;
+}
+
+.signup-link a:hover {
+    text-decoration: none;
+}

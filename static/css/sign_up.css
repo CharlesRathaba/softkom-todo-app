@@ -1,0 +1,125 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 50px);
+    padding: 20px;
+    background-color: #dfdfdf;
+}
+
+.login-box-field {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #dfdfdf;
+}
+
+.login-header {
+    text-align: center;
+    margin: 20px 0 10px 0;
+}
+
+.login-header header {
+    font-weight: 600;
+    font-size: 30px;
+    color: #333
+}
+
+.notification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px 0;
+}
+
+.notification {
+    max-width: 100%;
+    width: auto;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.is-danger {
+    background-color: #f14668;
+    color: #fff;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.login-box {
+    flex: 1;
+}
+
+.login-box .input-field {
+    width: 100%;
+    height: 60px;
+    font-size: 17px;
+    padding: 0 25px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgb(0, 0, 0, 0.05);
+    outline: none;
+}
+
+::placeholder {
+    font-weight: 500;
+    color: #222;
+}
+
+.input-field:focus {
+    transform: scale(1.05);
+}
+
+.input-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    width: auto;
+    min-width: 200px; 
+    height: 60px;
+    background-color: #222;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    padding: 0 40px; 
+}
+
+.submit-btn:hover {
+    background-color: #000;
+    transform: scale(1.05);
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.signup-link a {
+    font-weight: 600;
+    color: #000;
+    margin-left: 4px;
+}
+
+.signup-link a:hover {
+    text-decoration: none;
+}

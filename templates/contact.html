@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="todo contact-page">
+        <h1 class="fade-in">Contact Us</h1>
+        <div class="content slide-in-left">
+            <p>Hello {{ name }}! We'd love to hear from you. If you have any questions, suggestions, or feedback, please don't hesitate to reach out.</p>
+        </div>
+        <div class="contact-info slide-in-right">
+            <h2>Get in Touch:</h2>
+            <p>Email: support@todoapp.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: 123 Todo Street, Task City, TO 12345</p>
+        </div>
+        <a href="{{ url_for('main.index') }}" class="btn bounce">Back to Tasks</a>
+    </div>
+</div>
+{% endblock %}

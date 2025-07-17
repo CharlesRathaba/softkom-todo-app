@@ -1,42 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI To-Do App</title>
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center p-4">
-    <div class="w-full max-w-md bg-white rounded shadow p-6 mt-8">
-        <h1 class="text-2xl font-bold mb-4 text-center">AI To-Do App</h1>
-        <!-- Auth Section -->
-        <div id="auth-section" class="mb-4 flex flex-col items-center">
-            <button id="login-btn" class="bg-blue-500 text-white px-4 py-2 rounded mb-2">Login</button>
-            <button id="logout-btn" class="bg-gray-400 text-white px-4 py-2 rounded hidden">Logout</button>
-            <div id="user-info" class="text-sm text-gray-600"></div>
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="todo">
+        <div class="class-heading">
+            <h1>List_Todo</h1>
+            <img src="{{ url_for('static', filename='images/to-do-list.png') }}" alt="todoapp">
         </div>
-        <!-- Add To-Do Form -->
-        <form id="todo-form" class="flex mb-4">
-            <input id="todo-input" type="text" class="flex-1 border rounded-l px-3 py-2 focus:outline-none" placeholder="Add a new to-do..." required>
-            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-r">Add</button>
-        </form>
-        <!-- To-Do List -->
-        <ul id="todo-list" class="mb-4"></ul>
-        <!-- Translation Section -->
-        <div id="translation-section" class="mt-4">
-            <label for="language-select" class="block mb-2">Translate to:</label>
-            <select id="language-select" class="border rounded px-2 py-1">
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="zh">Chinese</option>
-                <!-- Add more languages as needed -->
-            </select>
+        <div class="headers">
+            <h2 id="personal" class="active">personal</h2>
+            <h2 id="professional">professional</h2>
+        </div>
+        <div>
+            <h1>Welcome, {{ name }}</h1>
+        </div>
+        <div class="row">
+            <input type="text" id="input-type" placeholder="what do you need to do">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <div id="task-container">
+            <ul id="list-container"></ul>
+            <p id="no-tasks-message" style="display: none;">There are no tasks. Please create a task.</p>
+        </div>
+        <div class="clear-all-container">
+            <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Clear All" class="clear-all-icon">
+            <span class="clear-all-text">Clear All</span>
         </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <script src="/static/app.js"></script>
-</body>
-</html>
+</div>
+{% block script %}<script src="{{ url_for('static', filename='js/script.js') }}"></script>{% endblock %}
+{% endblock %}

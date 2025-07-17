@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-bar.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    {% block css %} {% endblock %}
+</head>
+
+<body>
+    <nav id="nav-bar">
+        <ul>
+            <a href="{{ url_for('main.index') }}"><li>home</li></a>
+            <a href="{{ url_for('main.contact_us') }}"><li>contact us</li></a>
+            <a href="{{ url_for('main.about') }}"><li>about</li></a>
+            {% if not current_user.is_anonymous %}
+            <a href="{{ url_for('main.logout') }}"><li><button type="button" id="login-botton">logout</button></li></a>
+            {% else %}
+            <a href="{{ url_for('main.login') }}"><li><button type="button" id="login-botton">login</button></li></a>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    {% block script %}{% endblock %}
+</body>
+</html>

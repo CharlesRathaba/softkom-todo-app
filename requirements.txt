@@ -1,2 +1,9 @@
-Flask
+alembic
+sqlalchemy
+logging
+flask
+flask_sqlalchemy
+flask_migrate
+flask_login
 requests
+

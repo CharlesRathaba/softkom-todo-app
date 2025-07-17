@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sign_up.css') }}">
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('main.sign_up') }}">
+    <div class="login-container">
+        <div class="login-box-field">
+            <div class="login-header">
+                <header>Sign-up</header>
+                <header>create your account</header>
+            </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="notification-container">
+                <div class="notification is-danger">
+                    {{ messages[0] }}. Go to <a href="{{ url_for('main.login') }}">login page</a>.
+                </div>
+            </div>
+            {% endif %}
+            {% endwith %}
+            <div class="input-row">
+                <div class="login-box">
+                    <input type="text" class="input-field" name="First name" placeholder="First name" required>
+                </div>
+                <div class="login-box">
+                    <input type="text" class="input-field" name="Surname" placeholder="Surname" required>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="login-box">
+                    <input type="email" class="input-field" name="Email" placeholder="Email" required>
+                </div>
+                <div class="login-box">
+                    <input type="tel" class="input-field" name="Phone number" placeholder="Phone number" required>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="login-box">
+                    <input type="password" class="input-field" name="Password" placeholder="Password" required>
+                </div>
+                <div class="login-box">
+                    <input type="password" class="input-field" name="Confirm password" placeholder="Confirm password" required>
+                </div>
+            </div>
+            <div class="input-submit">
+                <button class="submit-btn" type="submit">register</button>
+            </div>
+            <div class="signup-link">Do you have an account?<a href="{{ url_for('main.login') }}">Click here</a></div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        setTimeout(() => {
+            const notification = document.querySelector('.notification');
+            if (notification) {
+                notification.style.display = 'none';
+            }
+        }, 5000); // 5000 milliseconds = 5 seconds
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="todo about-page">
+        <h1 class="fade-in">About Us</h1>
+        <div class="content slide-in-left">
+            <p>Welcome to our Todo App, {{ name }}! We're dedicated to helping you stay organized and productive.</p>
+            <p>Our mission is to provide a simple, intuitive, and effective tool for managing your daily tasks.</p>
+        </div>
+        <div class="features slide-in-right">
+            <h2>Key Features:</h2>
+            <ul>
+                <li>Easy task creation and management</li>
+                <li>Categorize your tasks</li>
+                <li>Track your progress</li>
+                <li>Responsive design for all devices</li>
+            </ul>
+        </div>
+        <a href="{{ url_for('main.index') }}" class="btn bounce">Back to Tasks</a>
+    </div>
+</div>
+{% endblock %}
