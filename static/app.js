@@ -1,7 +1,7 @@
 // --- Firebase Config & Initialization ---
 // TODO: Replace with your Firebase config from the Firebase Console
 const firebaseConfig = {
-    apiKey: "AIzaSyAzF6rMmBotA7NjZeR7RG2tWl8bDc-_B1k",
+    apiKey: API_KEY,
     authDomain: "softkom-todo-app.firebaseapp.com",
     projectId: "softkom-todo-app",
     storageBucket: "softkom-todo-app.firebasestorage.app",
