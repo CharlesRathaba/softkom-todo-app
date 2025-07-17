@@ -1,6 +1,7 @@
 from flask import Flask
 from config import Config
 from extensions import db, migrate, login_manager
+from models import db
 
 def create_app():
     app = Flask(__name__)
@@ -14,6 +15,7 @@ def create_app():
     with app.app_context():
         from routes import bp as routes_bp
         app.register_blueprint(routes_bp)
+        #db.create_all()
 
     return app
 
