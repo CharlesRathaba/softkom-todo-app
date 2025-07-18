@@ -22,12 +22,6 @@ class User(db.Model, UserMixin):
     def get_id(self):
         return str(self.id)
 
-from typing import Optional
-import sqlalchemy as sa
-import sqlalchemy.orm as so
-from extensions import db
-from datetime import datetime, timezone
-from flask_login import UserMixin
 
 class Task(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
