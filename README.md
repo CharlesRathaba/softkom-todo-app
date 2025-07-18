@@ -26,7 +26,18 @@ source env/bin/activate  # On Windows, use `env\Scripts\activate`
 pip install -r requirements.txt
 
 4.Set up the database:
-flask db upgrade
+
+- Set the `DATABASE_URI` environment variable to your database connection string. For example, if you are using Neon or another Postgres provider, your connection string will look like:
+
+  ```
+  export DATABASE_URI=postgresql://<username>:<password>@<host>/<database>
+  ```
+  On Windows (Command Prompt):
+  ```
+  set DATABASE_URI=postgresql://<username>:<password>@<host>/<database>
+  ```
+
+- In `app.py`, temporarily uncomment the line with `db.create_all()` inside the `create_app()` function. Run the app once (e.g., with `flask run` or `python app.py`) to create the tables in your database. After the tables are created, comment the `db.create_all()` line again to avoid recreating tables on every start.
 
 5.flask run
 
@@ -38,10 +49,17 @@ After starting the application, navigate to http://localhost:5000 in your web br
 Project Structure
 
 app.py: The main application file
+
 config.py: Configuration settings
+
 models.py: Database models
+
 routes.py: Application routes
+
 extensions.py: Flask extensions
+
 migrations/: Database migration files
+
 static/: Static files (CSS, JavaScript, etc.)
+
 templates/: HTML templates

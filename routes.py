@@ -6,16 +6,22 @@ from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, login_required, logout_user, current_user
 import requests
 
-bp = Blueprint('main', __name__) 
+bp = Blueprint('main', __name__)
 
 @bp.route("/")
 @bp.route("/index")
 @login_required
 def index():
+    """
+    Render the main to-do list page for the logged-in user.
+    """
     return render_template('index.html', name=current_user.first_name)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Handle user login. On POST, validate credentials and log the user in.
+    """
     if request.method == 'POST':
         email = request.form.get('Email')
         password = request.form.get('Password')
@@ -38,6 +44,9 @@ def login():
 
 @bp.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
+    """
+    Handle user registration. On POST, validate and create a new user.
+    """
     if request.method == 'POST':
         first_name = request.form.get('First name')
         surname = request.form.get('Surname')
@@ -97,28 +106,43 @@ def sign_up():
 @bp.route('/about')
 @login_required
 def about():
-   return render_template('about.html', name=current_user.first_name)
+    """
+    Render the about page for the logged-in user.
+    """
+    return render_template('about.html', name=current_user.first_name)
 
 @bp.route('/contact')
 @login_required
 def contact_us():
+    """
+    Render the contact page for the logged-in user.
+    """
     return render_template('contact.html', name=current_user.first_name)
 
 @bp.route('/logout')
 @login_required
 def logout():
+    """
+    Log out the current user and redirect to login page.
+    """
     logout_user()
     return redirect(url_for('main.login'))
 
 @bp.route('/tasks', methods=['GET'])
 @login_required
 def get_tasks():
+    """
+    Return all tasks for the current user as JSON.
+    """
     tasks = Task.query.filter_by(author=current_user).all()
     return jsonify([task.to_dict() for task in tasks])
 
 @bp.route('/tasks', methods=['POST'])
 @login_required
 def create_task():
+    """
+    Create a new task for the current user from JSON data.
+    """
     data = request.json
     task = Task(
         description=data['description'],
@@ -133,6 +157,9 @@ def create_task():
 @bp.route('/tasks/<int:task_id>', methods=['PUT'])
 @login_required
 def update_task(task_id):
+    """
+    Update a task's fields (description, category, completed) for the current user.
+    """
     task = Task.query.get_or_404(task_id)
     if task.author != current_user:
         return jsonify({'error': 'Unauthorized'}), 403
@@ -146,6 +173,9 @@ def update_task(task_id):
 @bp.route('/tasks/<int:task_id>', methods=['DELETE'])
 @login_required
 def delete_task(task_id):
+    """
+    Delete a task for the current user.
+    """
     task = Task.query.get_or_404(task_id)
     if task.author != current_user:
         return jsonify({'error': 'Unauthorized'}), 403
@@ -156,10 +186,14 @@ def delete_task(task_id):
 @bp.route('/translate', methods=['POST'])
 @login_required
 def translate():
+    """
+    Batch or single translation endpoint using Google Translate API.
+    Accepts JSON with 'texts' (list) or 'text' (string) and 'target_lang'.
+    Returns translated text(s).
+    """
     data = request.json
     texts = data.get('texts')
     target_lang = data.get('target_lang')
-
     if texts and isinstance(texts, list) and target_lang:
         translations = []
         for text in texts:
@@ -182,7 +216,6 @@ def translate():
             except Exception as e:
                 translations.append(None)
         return jsonify({'translations': translations})
-
     # Single translation fallback
     text = data.get('text')
     if text and target_lang:
@@ -203,5 +236,4 @@ def translate():
             return jsonify({'translated': translated})
         except Exception as e:
             return jsonify({'error': 'Translation failed', 'details': str(e)}), 500
-
     return jsonify({'error': 'Missing text(s) or target language'}), 400

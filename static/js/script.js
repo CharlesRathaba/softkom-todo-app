@@ -1,6 +1,14 @@
+// softkom-todo-app JavaScript
+// Handles all client-side logic for the to-do list UI, including task CRUD, category switching, and batch translation.
+
 // Global variables
 let currentCategory = 'personal';
 
+// Wait for the DOM to load before attaching event listeners
+// Sets up all UI event handlers and fetches initial tasks
+/**
+ * Initialize event listeners and fetch tasks on page load.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const inputBox = document.getElementById('input-type');
     const listContainer = document.getElementById('list-container');
@@ -17,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchTasks();
 
+    // Add task on Enter key
     inputBox.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             addTask();
@@ -25,50 +34,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     addButton.addEventListener('click', addTask);
 
+    // Handle clicks on task items (delete, toggle, edit)
     listContainer.addEventListener('click', handleTaskClick);
     personalButton.addEventListener('click', () => switchCategory('personal'));
     professionalButton.addEventListener('click', () => switchCategory('professional'));
     clearAllElement.addEventListener('click', clearAllTasks);
 
-    // Add translation event delegation
-    listContainer.addEventListener('click', function(e) {
-        if (e.target.classList.contains('translate-btn')) {
-            const li = e.target.closest('li');
-            const text = li.querySelector('.task-text').textContent;
-            const langSelect = li.querySelector('.lang-select');
-            const targetLang = langSelect.value;
-            const translatedTextSpan = li.querySelector('.translated-text');
-            e.target.disabled = true;
-            translatedTextSpan.textContent = 'Translating...';
-            fetch('/translate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text, target_lang: targetLang })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.translated) {
-                    translatedTextSpan.textContent = data.translated;
-                } else {
-                    translatedTextSpan.textContent = 'Translation failed';
-                }
-            })
-            .catch(() => {
-                translatedTextSpan.textContent = 'Translation failed';
-            })
-            .finally(() => {
-                e.target.disabled = false;
-            });
-        }
-    });
-
+    // Batch translation: translate all visible tasks
     if (translateAllBtn && langSelectAll) {
         translateAllBtn.addEventListener('click', function() {
             const listContainer = document.getElementById('list-container');
+            // Only translate visible tasks (current category)
             const tasks = Array.from(listContainer.querySelectorAll('li')).filter(li => li.style.display !== 'none');
             const texts = tasks.map(li => li.querySelector('.task-text').textContent);
             const targetLang = langSelectAll.value;
-            // Set all to 'Translating...'
+            // Show loading message
             tasks.forEach(li => {
                 li.querySelector('.translated-text').textContent = 'Translating...';
             });
@@ -98,6 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+/**
+ * Fetch all tasks from the backend and render them in the UI.
+ */
 function fetchTasks() {
     fetch('/tasks')
         .then(response => response.json())
@@ -113,6 +96,11 @@ function fetchTasks() {
         .catch(error => console.error('Error:', error));
 }
 
+/**
+ * Create a DOM element for a single task, including translation span.
+ * @param {Object} task - The task object from backend
+ * @returns {HTMLElement} The <li> element for the task
+ */
 function createTaskElement(task) {
     let li = document.createElement('li');
     li.className = 'task-item';
@@ -125,16 +113,13 @@ function createTaskElement(task) {
     `;
     li.dataset.category = task.category;
     li.dataset.id = task.id;
-
-    // Add translation UI
-    const template = document.getElementById('task-translate-template');
-    if (template) {
-        const translationUI = template.content.cloneNode(true);
-        li.appendChild(translationUI);
-    }
     return li;
 }
 
+/**
+ * Add a new task using the value in the input box.
+ * Sends a POST request to the backend and updates the UI.
+ */
 function addTask() {
     const inputBox = document.getElementById('input-type');
     if (inputBox.value === '') {
@@ -165,6 +150,10 @@ function addTask() {
     }
 }
 
+/**
+ * Handle clicks on task items (delete, toggle, edit).
+ * @param {Event} e - The click event
+ */
 function handleTaskClick(e) {
     const taskElement = e.target.closest('li');
     if (e.target.classList.contains('delete-icon')) {
@@ -176,6 +165,10 @@ function handleTaskClick(e) {
     }
 }
 
+/**
+ * Toggle the completed status of a task.
+ * @param {HTMLElement} taskElement - The <li> element for the task
+ */
 function toggleTask(taskElement) {
     const taskId = taskElement.dataset.id;
     const completed = !taskElement.classList.contains('checked');
@@ -198,6 +191,10 @@ function toggleTask(taskElement) {
     });
 }
 
+/**
+ * Delete a task from the backend and remove it from the UI.
+ * @param {HTMLElement} taskElement - The <li> element for the task
+ */
 function deleteTask(taskElement) {
     const taskId = taskElement.dataset.id;
     
@@ -215,6 +212,10 @@ function deleteTask(taskElement) {
     });
 }
 
+/**
+ * Update the description of a task after editing.
+ * @param {HTMLElement} taskElement - The <li> element for the task
+ */
 function updateTaskDescription(taskElement) {
     const taskId = taskElement.dataset.id;
     const newDescription = taskElement.querySelector('.task-text').textContent;
@@ -232,6 +233,9 @@ function updateTaskDescription(taskElement) {
     });
 }
 
+/**
+ * Delete all tasks in the current category.
+ */
 function clearAllTasks() {
     const listContainer = document.getElementById('list-container');
     const tasks = listContainer.querySelectorAll('li');
@@ -243,6 +247,10 @@ function clearAllTasks() {
     });
 }
 
+/**
+ * Switch between personal and professional categories.
+ * @param {string} category - The category to switch to
+ */
 function switchCategory(category) {
     currentCategory = category;
     document.getElementById('personal').classList.toggle('active', category === 'personal');
@@ -250,6 +258,9 @@ function switchCategory(category) {
     updateTaskVisibility();
 }
 
+/**
+ * Show/hide tasks based on the current category and display a message if none.
+ */
 function updateTaskVisibility() {
     const listContainer = document.getElementById('list-container');
     const noTasksMessage = document.getElementById('no-tasks-message');
