@@ -4,6 +4,7 @@ from models import User, Task
 from extensions import db
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, login_required, logout_user, current_user
+import requests
 
 bp = Blueprint('main', __name__) 
 
@@ -151,3 +152,56 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     return '', 204
+
+@bp.route('/translate', methods=['POST'])
+@login_required
+def translate():
+    data = request.json
+    texts = data.get('texts')
+    target_lang = data.get('target_lang')
+
+    if texts and isinstance(texts, list) and target_lang:
+        translations = []
+        for text in texts:
+            try:
+                response = requests.get(
+                    "https://translate.googleapis.com/translate_a/single",
+                    params={
+                        "client": "gtx",
+                        "sl": "auto",  # auto-detect source language
+                        "tl": target_lang,
+                        "dt": "t",
+                        "q": text
+                    },
+                    timeout=10
+                )
+                response.raise_for_status()
+                # The response is a deeply nested list
+                translated = response.json()[0][0][0]
+                translations.append(translated)
+            except Exception as e:
+                translations.append(None)
+        return jsonify({'translations': translations})
+
+    # Single translation fallback
+    text = data.get('text')
+    if text and target_lang:
+        try:
+            response = requests.get(
+                "https://translate.googleapis.com/translate_a/single",
+                params={
+                    "client": "gtx",
+                    "sl": "auto",
+                    "tl": target_lang,
+                    "dt": "t",
+                    "q": text
+                },
+                timeout=10
+            )
+            response.raise_for_status()
+            translated = response.json()[0][0][0]
+            return jsonify({'translated': translated})
+        except Exception as e:
+            return jsonify({'error': 'Translation failed', 'details': str(e)}), 500
+
+    return jsonify({'error': 'Missing text(s) or target language'}), 400
