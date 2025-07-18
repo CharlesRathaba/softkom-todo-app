@@ -11,6 +11,7 @@ Features:
 2.Organize tasks into categories
 3.Mark tasks as complete
 4.User authentication and personalized todo lists
+5.Translate all visible tasks into a language of the user's choice.
 
 Installation
 
@@ -63,3 +64,5 @@ migrations/: Database migration files
 static/: Static files (CSS, JavaScript, etc.)
 
 templates/: HTML templates
+
+api/: Vercel hosting
